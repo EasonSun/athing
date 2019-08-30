@@ -36,7 +36,7 @@ extension CameraController {
         
         func configureCaptureDevices() throws {
             
-            let session = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInDualCamera], mediaType: AVMediaType.video, position: .unspecified)
+            let session = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: .video, position: .back)
             
             let cameras = session.devices.compactMap { $0 }
             guard !cameras.isEmpty else { throw CameraControllerError.noCamerasAvailable }
@@ -51,6 +51,7 @@ extension CameraController {
                     
                     try camera.lockForConfiguration()
                     camera.focusMode = .continuousAutoFocus
+//                    add preset configuration here.
                     camera.unlockForConfiguration()
                 }
             }
