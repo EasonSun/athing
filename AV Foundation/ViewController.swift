@@ -91,12 +91,16 @@ extension ViewController {
     }
     
     @IBAction func captureImage(_ sender: UIButton) {
+        // TODO cannot start right away. What is the start signal? Installed on dock, or intensity max detected, i.e the door closed. In a micro wave, operations are done after lid closes
+        // TODO can I do everthing in sequence here?
         cameraController.captureImage {(image, error) in
             guard let image = image else {
                 print(error ?? "Image capture error")
                 return
             }
             
+            // save photo to camera roll; TODO how to really save into the app
+            // TODO in our system, only save at last shooting. Maybe just 2 classes
             try? PHPhotoLibrary.shared().performChangesAndWait {
                 PHAssetChangeRequest.creationRequestForAsset(from: image)
             }

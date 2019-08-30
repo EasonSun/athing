@@ -177,6 +177,8 @@ extension CameraController {
         captureSession.commitConfiguration()
     }
     
+    // callbacks will be called, if implemented. Here photoOutput will be called.
+    // photoOutput returns image
     func captureImage(completion: @escaping (UIImage?, Error?) -> Void) {
         guard let captureSession = captureSession, captureSession.isRunning else { completion(nil, CameraControllerError.captureSessionIsMissing); return }
         
@@ -194,7 +196,10 @@ extension CameraController: AVCapturePhotoCaptureDelegate {
                         resolvedSettings: AVCaptureResolvedPhotoSettings, bracketSettings: AVCaptureBracketedStillImageSettings?, error: Swift.Error?) {
         if let error = error { self.photoCaptureCompletionBlock?(nil, error) }
             
-        else if let buffer = photoSampleBuffer, let data = AVCapturePhotoOutput.jpegPhotoDataRepresentation(forJPEGSampleBuffer: buffer, previewPhotoSampleBuffer: nil),
+        else if let buffer = photoSampleBuffer,
+            // data is used to create image, image is used to create a new entry in the photo app after capturing by Camera.
+            let data = AVCapturePhotoOutput.jpegPhotoDataRepresentation(forJPEGSampleBuffer: buffer, previewPhotoSampleBuffer: nil),
+//          return to view
             let image = UIImage(data: data) {
             
             self.photoCaptureCompletionBlock?(image, nil)
