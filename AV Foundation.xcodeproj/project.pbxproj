@@ -12,6 +12,7 @@
 		AF7DD4D81ED3AA28005C880E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AF7DD4D61ED3AA28005C880E /* Main.storyboard */; };
 		AF7DD4DA1ED3AA28005C880E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF7DD4D91ED3AA28005C880E /* Assets.xcassets */; };
 		AF7DD4DD1ED3AA28005C880E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AF7DD4DB1ED3AA28005C880E /* LaunchScreen.storyboard */; };
+		D01582062324DF3900241992 /* BLEController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01582052324DF3900241992 /* BLEController.swift */; };
 		F4D077821EDC0A91001B0881 /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D077811EDC0A91001B0881 /* CameraController.swift */; };
 /* End PBXBuildFile section */
 
@@ -23,6 +24,7 @@
 		AF7DD4D91ED3AA28005C880E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "AV Foundation/Assets.xcassets"; sourceTree = "<group>"; };
 		AF7DD4DC1ED3AA28005C880E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AF7DD4DE1ED3AA28005C880E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D01582052324DF3900241992 /* BLEController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEController.swift; sourceTree = "<group>"; };
 		F4D077811EDC0A91001B0881 /* CameraController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -40,6 +42,7 @@
 		AF7DD4C61ED3AA28005C880E = {
 			isa = PBXGroup;
 			children = (
+				D01582052324DF3900241992 /* BLEController.swift */,
 				F4D077811EDC0A91001B0881 /* CameraController.swift */,
 				AF7DD4D61ED3AA28005C880E /* Main.storyboard */,
 				AF7DD4D41ED3AA28005C880E /* ViewController.swift */,
@@ -143,6 +146,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F4D077821EDC0A91001B0881 /* CameraController.swift in Sources */,
+				D01582062324DF3900241992 /* BLEController.swift in Sources */,
 				AF7DD4D51ED3AA28005C880E /* ViewController.swift in Sources */,
 				AF7DD4D31ED3AA28005C880E /* AppDelegate.swift in Sources */,
 			);

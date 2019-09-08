@@ -50,9 +50,27 @@ extension ViewController {
             captureButton.layer.cornerRadius = min(captureButton.frame.width, captureButton.frame.height) / 2
         }
         
+        func configBLEController() {
+            
+        }
+        
         styleCaptureButton()
         configureCameraController()
+        configBLEController()
+        BLEController.setLightingParam(CameraController.getLightingParam())
         
+        cameraController.captureImage {(image, error) in
+            guard let image = image else {
+                print(error ?? "Image capture error")
+                return
+            }
+            
+            // save photo to camera roll; TODO how to really save into the app
+            // TODO in our system, only save at last shooting. Maybe just 2 classes
+            try? PHPhotoLibrary.shared().performChangesAndWait {
+                PHAssetChangeRequest.creationRequestForAsset(from: image)
+            }
+        }
     }
 }
 

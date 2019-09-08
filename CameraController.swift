@@ -51,7 +51,7 @@ extension CameraController {
                     
                     try camera.lockForConfiguration()
                     camera.focusMode = .continuousAutoFocus
-//                    add preset configuration here.
+//                    TODO add preset configuration here.
                     camera.unlockForConfiguration()
                 }
             }
