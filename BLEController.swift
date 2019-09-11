@@ -10,12 +10,15 @@ import CoreBluetooth
 
 // TODO multiple service, e.g. one for lighting, one for multi-angle, etc?
 let lightingCtlServiceCBUUID = CBUUID(string: "find me")
-let lightingReadyCharacteristicCBUUID = CBUUID(string: "find me")
+let lightingCtlCharCBUUID = CBUUID(string: "find me")
+let lightingReadyCharCBUUID = CBUUID(string: "find me")
 
 class BLEController: NSObject {
     var centralManager: CBCentralManager!
     var lightingCtlPeripheral: CBPeripheral!
-    var isLightingReady: Bool
+    var lightingCtlChar: CBCharacteristic!
+    var lightingReadyChar: CBCharacteristic!
+    var isLightingReady: Bool = false
 }
 
 extension BLEController {
@@ -24,7 +27,7 @@ extension BLEController {
     }
     
     func setLightingParam(lightingParam: [UInt8]) {
-        //TODO
+        
     }
 }
 
@@ -79,30 +82,36 @@ extension BLEController: CBPeripheralDelegate {
         
         for characteristic in characteristics {
             print(characteristic)
-            // TODO
-//            if characteristic.properties.contains(.read) {
-//                print("\(characteristic.uuid): properties contains .read")
-//                peripheral.readValue(for: characteristic)
-//            }
-//            if characteristic.properties.contains(.notify) {
-//                print("\(characteristic.uuid): properties contains .notify")
-//                peripheral.setNotifyValue(true, for: characteristic)
-//            }
+            switch characteristic.uuid {
+            case lightingCtlCharCBUUID:
+                self.lightingCtlChar = characteristic
+            case lightingReadyCharCBUUID:
+                peripheral.setNotifyValue(true, for: characteristic)
+            default:
+                continue
+            }
         }
     }
     
+    // This method is invoked after a @link readValueForCharacteristic: @/link call, or upon receipt of a notification/indication.
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
         switch characteristic.uuid {
-        case lightingReadyCharacteristicCBUUID:
+        case lightingReadyCharCBUUID:
             isLightingReady = getLightingReady(from: characteristic)
         default:
             print("Unhandled Characteristic UUID: \(characteristic.uuid)")
         }
     }
     
+    // decode lighting ready signal
     private func getLightingReady(from characteristic: CBCharacteristic) -> Bool {
         guard let characteristicData = characteristic.value else { return false }
-        let byteArray = [UInt8](characteristicData)
-        //TODO
+        let byte = characteristicData.first
+        
+        switch byte {
+        case 1: return true
+        default:
+            return false
+        }
     }
 }

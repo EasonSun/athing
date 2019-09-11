@@ -9,9 +9,14 @@
 
 // See the following for generating UUIDs:
 // https://www.uuidgenerator.net/
+// Do I need a different UUID for each box?
+// Do I have to follow GATT, whenever possible?
+// https://randomnerdtutorials.com/esp32-bluetooth-low-energy-ble-arduino-ide/
+// A characteristic value can be up to 20 bytes long => 160 lights. fine.
 
 #define SERVICE_UUID        "4fafc201-1fb5-459e-8fcc-c5c9c331914b"
-#define CHARACTERISTIC_UUID "beb5483e-36e1-4688-b7f5-ea07361b26a8"
+#define LightingCtrlCharUUID "beb5483e-36e1-4688-b7f5-ea07361b26a8"
+#define LightingReadyCharUUID "beb5483e-1fb5-4688-8fcc-ea07361b26a8"
 
 
 class MyCallbacks: public BLECharacteristicCallbacks {
@@ -48,19 +53,25 @@ void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
 
   BLEDevice::init("StikLight");
-  BLEServer *pServer = BLEDevice::createServer();
+  BLEServer *pLightingCtrlServer = BLEDevice::createServer();
 
-  BLEService *pService = pServer->createService(SERVICE_UUID);
+  BLEService *pLightingCtrlServer = pLightingCtrlServer->createService(SERVICE_UUID);
 
-  BLECharacteristic *pCharacteristic = pService->createCharacteristic(
-                                         CHARACTERISTIC_UUID,
+  BLECharacteristic *pLightingCtrlChar = pLightingCtrlServer->createCharacteristic(
+                                         LightingCtrlCharUUID,
                                          BLECharacteristic::PROPERTY_READ |
                                          BLECharacteristic::PROPERTY_WRITE
                                        );
 
-  pCharacteristic->setCallbacks(new MyCallbacks());
+  BLECharacteristic *pLightingReadyChar = pLightingCtrlServer->createCharacteristic(
+                                         LightingReadyCharUUID,
+                                         BLECharacteristic::PROPERTY_NOTIFY
+                                       );
+                                       
 
-  pCharacteristic->setValue("Hello World");
+  pLightingCtrlChar->setCallbacks(new MyCallbacks());
+
+//  pCharacteristic->setValue("Hello World");
   pService->start();
 
   BLEAdvertising *pAdvertising = pServer->getAdvertising();
