@@ -18,9 +18,11 @@
 #define LightingCtrlCharUUID "beb5483e-36e1-4688-b7f5-ea07361b26a8"
 #define LightingReadyCharUUID "beb5483e-1fb5-4688-8fcc-ea07361b26a8"
 
+BLECharacteristic* pLightingCtrlChar = NULL;
+BLECharacteristic* pLightingReadyChar = NULL;
+bool lightingReady = false;
 
-class MyCallbacks: public BLECharacteristicCallbacks {
-    // TODO send light array on/off matrix as a number; 1 light per byte
+class MyToyCallbacks: public BLECharacteristicCallbacks {
     void onWrite(BLECharacteristic *pCharacteristic) {
       std::string value = pCharacteristic->getValue();
 
@@ -36,7 +38,18 @@ class MyCallbacks: public BLECharacteristicCallbacks {
 
 
       digitalWrite(LED_BUILTIN, HIGH);   // turn the LED on (HIGH is the voltage level)
-      delay(1000);                       // wait for a second 
+      delay(1000);                       // wait for a second       
+    }
+};
+
+
+class MyCallbacks: public BLECharacteristicCallbacks {
+    void onWrite(BLECharacteristic *pCharacteristic) {
+      std::string value = pCharacteristic->getValue();
+
+      // TODO send light array on/off matrix as a number; 1 light per byte
+
+      lightingReady = true // AFTER LIGHTING CTRL IS DONE
     }
 };
 
@@ -57,13 +70,13 @@ void setup() {
 
   BLEService *pLightingCtrlServer = pLightingCtrlServer->createService(SERVICE_UUID);
 
-  BLECharacteristic *pLightingCtrlChar = pLightingCtrlServer->createCharacteristic(
+  pLightingCtrlChar = pLightingCtrlServer->createCharacteristic(
                                          LightingCtrlCharUUID,
                                          BLECharacteristic::PROPERTY_READ |
                                          BLECharacteristic::PROPERTY_WRITE
                                        );
 
-  BLECharacteristic *pLightingReadyChar = pLightingCtrlServer->createCharacteristic(
+  pLightingReadyChar = pLightingCtrlServer->createCharacteristic(
                                          LightingReadyCharUUID,
                                          BLECharacteristic::PROPERTY_NOTIFY
                                        );
@@ -81,4 +94,9 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
   delay(2000);
+
+  if (lightingReady) {
+    pLightingReadyChar -> setValue(1, 1); // (value, size) http://www.neilkolban.com/esp32/docs/cpp_utils/html/class_b_l_e_characteristic.html
+    pLightingReadyChar -> notify()
+  }
 }
