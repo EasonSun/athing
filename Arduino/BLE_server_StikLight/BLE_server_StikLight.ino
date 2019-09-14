@@ -38,7 +38,8 @@ class MyToyCallbacks: public BLECharacteristicCallbacks {
 
 
       digitalWrite(LED_BUILTIN, HIGH);   // turn the LED on (HIGH is the voltage level)
-      delay(1000);                       // wait for a second       
+      delay(1000);                       // wait for a second   
+      lightingReady = true;      
     }
 };
 
@@ -49,7 +50,7 @@ class MyCallbacks: public BLECharacteristicCallbacks {
 
       // TODO send light array on/off matrix as a number; 1 light per byte
 
-      lightingReady = true // AFTER LIGHTING CTRL IS DONE
+      lightingReady = true; // AFTER LIGHTING CTRL IS DONE
     }
 };
 
@@ -66,37 +67,41 @@ void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
 
   BLEDevice::init("StikLight");
-  BLEServer *pLightingCtrlServer = BLEDevice::createServer();
+  BLEServer *pLightingServer = BLEDevice::createServer();
 
-  BLEService *pLightingCtrlServer = pLightingCtrlServer->createService(SERVICE_UUID);
+  BLEService *pLightingCtrlService = pLightingServer->createService(SERVICE_UUID);
 
-  pLightingCtrlChar = pLightingCtrlServer->createCharacteristic(
+  pLightingCtrlChar = pLightingCtrlService->createCharacteristic(
                                          LightingCtrlCharUUID,
                                          BLECharacteristic::PROPERTY_READ |
                                          BLECharacteristic::PROPERTY_WRITE
                                        );
 
-  pLightingReadyChar = pLightingCtrlServer->createCharacteristic(
+  pLightingReadyChar = pLightingCtrlService->createCharacteristic(
                                          LightingReadyCharUUID,
                                          BLECharacteristic::PROPERTY_NOTIFY
                                        );
                                        
 
-  pLightingCtrlChar->setCallbacks(new MyCallbacks());
+  pLightingCtrlChar->setCallbacks(new MyToyCallbacks());
 
 //  pCharacteristic->setValue("Hello World");
-  pService->start();
+  pLightingCtrlService->start();
 
-  BLEAdvertising *pAdvertising = pServer->getAdvertising();
+  BLEAdvertising *pAdvertising = pLightingServer->getAdvertising();
   pAdvertising->start();
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-  delay(2000);
+//  delay(2000);
 
   if (lightingReady) {
-    pLightingReadyChar -> setValue(1, 1); // (value, size) http://www.neilkolban.com/esp32/docs/cpp_utils/html/class_b_l_e_characteristic.html
-    pLightingReadyChar -> notify()
+    uint8_t val = 1;
+    pLightingReadyChar -> setValue(&val, 1); // (value, size) http://www.neilkolban.com/esp32/docs/cpp_utils/html/class_b_l_e_characteristic.html
+    pLightingReadyChar -> notify();
+    delay(3);
+    digitalWrite(LED_BUILTIN, LOW);
+    lightingReady = false;
   }
 }

@@ -16,14 +16,18 @@ let lightingReadyCharCBUUID = CBUUID(string: "find me")
 class BLEController: NSObject {
     var centralManager: CBCentralManager!
     var lightingCtlPeripheral: CBPeripheral!
-    var lightingCtlChar: CBCharacteristic!
-    var lightingReadyChar: CBCharacteristic!
+    var lightingCtlChar: CBCharacteristic? = nil
+    var lightingReadyChar: CBCharacteristic? = nil
     var isLightingReady: Bool = false
 }
 
 extension BLEController {
     func prepare(completionHandler: @escaping (Error?) -> Void) {
         self.centralManager = CBCentralManager(delegate: self, queue: nil)
+        //TODO how to get the discovery ready?
+//        self.lightingCtlPeripheral.state == .connected
+        // TODO how to reconnect to a char
+        // wait until char become not nil
     }
     
     func setLightingParam(lightingParam: [UInt8]) {

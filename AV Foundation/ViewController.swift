@@ -25,6 +25,7 @@ class ViewController: UIViewController {
     @IBOutlet fileprivate var videoModeButton: UIButton!
     
     let cameraController = CameraController()
+    let bleControlloer = BLEController()
     
     override var prefersStatusBarHidden: Bool { return true }
     
@@ -51,14 +52,19 @@ extension ViewController {
         }
         
         func configBLEController() {
-            
+            bleControlloer.prepare {(error) in
+                if let error = error {
+                    print(error)
+                }
+            }
         }
         
         styleCaptureButton()
         configureCameraController()
         configBLEController()
-        BLEController.setLightingParam(CameraController.getLightingParam())
-        
+        // TODO hardcode lighting param for now
+//        bleControlloer.setLightingParam(lightingParam: cameraController.getLightingParam())
+
         cameraController.captureImage {(image, error) in
             guard let image = image else {
                 print(error ?? "Image capture error")
