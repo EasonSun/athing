@@ -6,6 +6,7 @@
 #include <BLEDevice.h>
 #include <BLEUtils.h>
 #include <BLEServer.h>
+#include <BLE2902.h>
 
 // See the following for generating UUIDs:
 // https://www.uuidgenerator.net/
@@ -18,8 +19,8 @@
 #define LightingCtrlCharUUID "beb5483e-36e1-4688-b7f5-ea07361b26a8"
 #define LightingReadyCharUUID "beb5483e-1fb5-4688-8fcc-ea07361b26a8"
 
-BLECharacteristic* pLightingCtrlChar = NULL;
-BLECharacteristic* pLightingReadyChar = NULL;
+BLECharacteristic *pLightingCtrlChar;
+BLECharacteristic *pLightingReadyChar;
 bool lightingReady = false;
 
 class MyToyCallbacks: public BLECharacteristicCallbacks {
@@ -70,7 +71,7 @@ void setup() {
   BLEServer *pLightingServer = BLEDevice::createServer();
 
   BLEService *pLightingCtrlService = pLightingServer->createService(SERVICE_UUID);
-
+  
   pLightingCtrlChar = pLightingCtrlService->createCharacteristic(
                                          LightingCtrlCharUUID,
                                          BLECharacteristic::PROPERTY_READ |

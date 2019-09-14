@@ -28,6 +28,7 @@ extension BLEController {
 //        self.lightingCtlPeripheral.state == .connected
         // TODO how to reconnect to a char
         // wait until char become not nil
+        
     }
     
     func setLightingParam(lightingParam: [UInt8]) {
@@ -89,6 +90,8 @@ extension BLEController: CBPeripheralDelegate {
             switch characteristic.uuid {
             case lightingCtlCharCBUUID:
                 self.lightingCtlChar = characteristic
+                // emit completion event
+                lightingCtlPeripheral.writeValue(Data: NSData(1), for: lightingCtlChar, type: CBCharacteristicWriteType)
             case lightingReadyCharCBUUID:
                 peripheral.setNotifyValue(true, for: characteristic)
             default:
@@ -117,5 +120,9 @@ extension BLEController: CBPeripheralDelegate {
         default:
             return false
         }
+    }
+    
+    func peripheral(_ peripheral: CBPeripheral, didWriteValueFor descriptor: CBDescriptor, error: Error?) {
+        <#code#>
     }
 }
