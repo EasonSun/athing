@@ -9,9 +9,10 @@ import AVFoundation
 import CoreBluetooth
 
 // TODO multiple service, e.g. one for lighting, one for multi-angle, etc?
-let lightingCtlServiceCBUUID = CBUUID(string: "find me")
-let lightingCtlCharCBUUID = CBUUID(string: "find me")
-let lightingReadyCharCBUUID = CBUUID(string: "find me")
+// <CBPeripheral: 0x281001860, identifier = 99C1BC44-54E0-5C4B-3AA7-64DCA8B28B63, name = StikLight, state = disconnected>
+let lightingCtlServiceCBUUID = CBUUID(string: "4FAFC201-1FB5-459E-8FCC-C5C9C331914B")
+let lightingCtlCharCBUUID = CBUUID(string: "BEB5483E-36E1-4688-B7F5-EA07361B26A8")
+let lightingReadyCharCBUUID = CBUUID(string: "BEB5483E-1FB5-4688-8FCC-EA07361B26A8")
 
 class BLEController: NSObject {
     var centralManager: CBCentralManager!
@@ -53,23 +54,32 @@ extension BLEController: CBCentralManagerDelegate {
         case .poweredOn:
             print("central.state is .poweredOn")
             // So it only scans for the lightingCtl service
-            // TODO multi service?
-            self.centralManager.scanForPeripherals(withServices: [lightingCtlServiceCBUUID])
+            // TODO if l58, app crashs. The service has to be on to be searched in app
+//        self.centralManager.scanForPeripherals(withServices: [lightingCtlServiceCBUUID])
+            self.centralManager.scanForPeripherals(withServices:nil)
         }
     }
     
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral,
                         advertisementData: [String : Any], rssi RSSI: NSNumber) {
         print(peripheral)
-        self.lightingCtlPeripheral = peripheral
-        self.lightingCtlPeripheral.delegate = self
-        self.centralManager.stopScan()
-        self.centralManager.connect(self.lightingCtlPeripheral)
+        if (peripheral.name == "StikLight") {
+//            print(peripheral.services?.count)
+            guard let services = peripheral.services else { return }
+            for service in services {
+                print(service)
+            }
+            self.centralManager.stopScan()
+        }
+//        self.lightingCtlPeripheral = peripheral
+//        self.lightingCtlPeripheral.delegate = self
+//        self.centralManager.stopScan()
+//        self.centralManager.connect(self.lightingCtlPeripheral)
     }
     
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
         print("Connected!")
-        lightingCtlPeripheral.discoverServices([lightingCtlServiceCBUUID])
+lightingCtlPeripheral.discoverServices([lightingCtlServiceCBUUID])
     }
 }
 
@@ -91,7 +101,7 @@ extension BLEController: CBPeripheralDelegate {
             case lightingCtlCharCBUUID:
                 self.lightingCtlChar = characteristic
                 // emit completion event
-                lightingCtlPeripheral.writeValue(Data: NSData(1), for: lightingCtlChar, type: CBCharacteristicWriteType)
+//                lightingCtlPeripheral.writeValue(Data: NSData(1), for: lightingCtlChar, type: CBCharacteristicWriteType)
             case lightingReadyCharCBUUID:
                 peripheral.setNotifyValue(true, for: characteristic)
             default:
@@ -122,7 +132,7 @@ extension BLEController: CBPeripheralDelegate {
         }
     }
     
-    func peripheral(_ peripheral: CBPeripheral, didWriteValueFor descriptor: CBDescriptor, error: Error?) {
-        <#code#>
-    }
+//    func peripheral(_ peripheral: CBPeripheral, didWriteValueFor descriptor: CBDescriptor, error: Error?) {
+//        <#code#>
+//    }
 }

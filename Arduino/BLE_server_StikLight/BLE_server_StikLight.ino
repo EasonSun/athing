@@ -22,7 +22,8 @@
 BLECharacteristic *pLightingCtrlChar;
 BLECharacteristic *pLightingReadyChar;
 bool lightingReady = false;
-
+uint32_t value = 1;
+    
 class MyToyCallbacks: public BLECharacteristicCallbacks {
     void onWrite(BLECharacteristic *pCharacteristic) {
       std::string value = pCharacteristic->getValue();
@@ -98,8 +99,7 @@ void loop() {
 //  delay(2000);
 
   if (lightingReady) {
-    uint8_t val = 1;
-    pLightingReadyChar -> setValue(&val, 1); // (value, size) http://www.neilkolban.com/esp32/docs/cpp_utils/html/class_b_l_e_characteristic.html
+    pLightingReadyChar -> setValue((uint8_t*)&value, 4); // (value, size) http://www.neilkolban.com/esp32/docs/cpp_utils/html/class_b_l_e_characteristic.html
     pLightingReadyChar -> notify();
     delay(3);
     digitalWrite(LED_BUILTIN, LOW);
