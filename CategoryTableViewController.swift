@@ -47,9 +47,13 @@ class CategoryTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "categoryCell") else { return UITableViewCell() }
-        cell.textLabel?.text = indexPath.row == 0
-            ? categories[indexPath.section].title
-            : categories[indexPath.section].sectionItems[indexPath.row - 1].config
+        if indexPath.row == 0 {
+            cell.textLabel?.text = categories[indexPath.section].title
+            cell.textLabel?.font = UIFont.systemFont(ofSize: 30.0)
+        } else {
+            cell.textLabel?.text = categories[indexPath.section].sectionItems[indexPath.row - 1].config
+            cell.indentationLevel = 1
+        }
         return cell
     }
     

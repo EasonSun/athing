@@ -13,8 +13,8 @@
 		AF7DD4DA1ED3AA28005C880E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF7DD4D91ED3AA28005C880E /* Assets.xcassets */; };
 		AF7DD4DD1ED3AA28005C880E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AF7DD4DB1ED3AA28005C880E /* LaunchScreen.storyboard */; };
 		D01582062324DF3900241992 /* BLEController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01582052324DF3900241992 /* BLEController.swift */; };
-		F2CE467E2336F22F00F388DC /* CategoryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2CE467D2336F22F00F388DC /* CategoryTableViewController.swift */; };
-		F2CE46802336F53400F388DC /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2CE467F2336F53400F388DC /* Item.swift */; };
+		D0C930C62338686000995CA5 /* CategoryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C930C42338686000995CA5 /* CategoryTableViewController.swift */; };
+		D0C930C72338686000995CA5 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C930C52338686000995CA5 /* Item.swift */; };
 		F4D077821EDC0A91001B0881 /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D077811EDC0A91001B0881 /* CameraController.swift */; };
 /* End PBXBuildFile section */
 
@@ -27,8 +27,8 @@
 		AF7DD4DC1ED3AA28005C880E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AF7DD4DE1ED3AA28005C880E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D01582052324DF3900241992 /* BLEController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEController.swift; sourceTree = "<group>"; };
-		F2CE467D2336F22F00F388DC /* CategoryTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTableViewController.swift; sourceTree = "<group>"; };
-		F2CE467F2336F53400F388DC /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
+		D0C930C42338686000995CA5 /* CategoryTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CategoryTableViewController.swift; path = /Users/Account/Drink/FullScreenCamera/CategoryTableViewController.swift; sourceTree = "<absolute>"; };
+		D0C930C52338686000995CA5 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Item.swift; path = /Users/Account/Drink/FullScreenCamera/Item.swift; sourceTree = "<absolute>"; };
 		F4D077811EDC0A91001B0881 /* CameraController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -46,8 +46,8 @@
 		AF7DD4C61ED3AA28005C880E = {
 			isa = PBXGroup;
 			children = (
-				F2CE467D2336F22F00F388DC /* CategoryTableViewController.swift */,
-				F2CE467F2336F53400F388DC /* Item.swift */,
+				D0C930C42338686000995CA5 /* CategoryTableViewController.swift */,
+				D0C930C52338686000995CA5 /* Item.swift */,
 				D01582052324DF3900241992 /* BLEController.swift */,
 				F4D077811EDC0A91001B0881 /* CameraController.swift */,
 				AF7DD4D61ED3AA28005C880E /* Main.storyboard */,
@@ -103,12 +103,12 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0830;
-				LastUpgradeCheck = 1030;
+				LastUpgradeCheck = 0930;
 				ORGANIZATIONNAME = "Pranjal Satija";
 				TargetAttributes = {
 					AF7DD4CE1ED3AA28005C880E = {
 						CreatedOnToolsVersion = 8.3.2;
-						DevelopmentTeam = H97AE3ZTV7;
+						DevelopmentTeam = 2NXSA77HGL;
 						LastSwiftMigration = 0930;
 						ProvisioningStyle = Automatic;
 					};
@@ -116,9 +116,10 @@
 			};
 			buildConfigurationList = AF7DD4CA1ED3AA28005C880E /* Build configuration list for PBXProject "AV Foundation" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = en;
+			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -152,9 +153,9 @@
 			files = (
 				F4D077821EDC0A91001B0881 /* CameraController.swift in Sources */,
 				D01582062324DF3900241992 /* BLEController.swift in Sources */,
-				F2CE467E2336F22F00F388DC /* CategoryTableViewController.swift in Sources */,
+				D0C930C62338686000995CA5 /* CategoryTableViewController.swift in Sources */,
 				AF7DD4D51ED3AA28005C880E /* ViewController.swift in Sources */,
-				F2CE46802336F53400F388DC /* Item.swift in Sources */,
+				D0C930C72338686000995CA5 /* Item.swift in Sources */,
 				AF7DD4D31ED3AA28005C880E /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -186,7 +187,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -245,7 +245,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -297,10 +296,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = H97AE3ZTV7;
+				DEVELOPMENT_TEAM = 2NXSA77HGL;
 				INFOPLIST_FILE = "AV Foundation/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.sticklight2.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sticklight.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
@@ -311,10 +310,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = H97AE3ZTV7;
+				DEVELOPMENT_TEAM = 2NXSA77HGL;
 				INFOPLIST_FILE = "AV Foundation/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.sticklight2.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sticklight.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
