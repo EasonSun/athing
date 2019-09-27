@@ -26,43 +26,34 @@ class ViewController: UIViewController {
     @IBOutlet fileprivate var videoModeButton: UIButton!
     
     static let cameraController = CameraController()
-    static let bleControlloer = BLEController()
-    
+
     override var prefersStatusBarHidden: Bool { return true }
     
 }
 
 extension ViewController {
     override func viewDidLoad() {
-        
-        func configureCameraController() {
-            ViewController.cameraController.prepare {(error) in
-                if let error = error {
-                    print(error)
-                }
-                
-                try? ViewController.cameraController.displayPreview(on: self.capturePreviewView)
-            }
-        }
-        
         func styleCaptureButton() {
             captureButton.layer.borderColor = UIColor.black.cgColor
             captureButton.layer.borderWidth = 2
             
             captureButton.layer.cornerRadius = min(captureButton.frame.width, captureButton.frame.height) / 2
         }
-        
-        func configBLEController() {
-            ViewController.bleControlloer.prepare {(error) in
+
+        func configureCameraController() {
+            ViewController.cameraController.prepare {(error) in
                 if let error = error {
                     print(error)
                 }
+
+                try? ViewController.cameraController.displayPreview(on: self.capturePreviewView)
             }
         }
-        
+
         styleCaptureButton()
+        print("configuring camera")
         configureCameraController()
-        configBLEController()
+
         // TODO hardcode lighting param for now
 //        bleControlloer.setLightingParam(lightingParam: cameraController.getLightingParam())
 

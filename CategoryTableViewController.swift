@@ -65,21 +65,16 @@ class CategoryTableViewController: UITableViewController {
         } else if (indexPath.row == 1) {
             // apply config and navigate back
             // CameraController.rearCamera?
-//            let data: Data! = "1".data(using: .utf8)
-//            ViewController.bleControlloer.lightingCtlPeripheral.writeValue(data, for: ViewController.bleControlloer.lightingCtlChar!, type: .withResponse)
+            AppDelegate.bleController.setLightingParam(catNo: 1)
             navigationController?.popViewController(animated: true)
         } else if (indexPath.row == 2) {
            // apply config and navigate back
            // CameraController.rearCamera?
-//           let data: Data! = "2".data(using: .utf8)
-//           ViewController.bleControlloer.lightingCtlPeripheral.writeValue(data, for: ViewController.bleControlloer.lightingCtlChar!, type: .withResponse)
-           navigationController?.popViewController(animated: true)
+            navigationController?.popViewController(animated: true)
         } else if (indexPath.row == 3) {
            // apply config and navigate back
            // CameraController.rearCamera?
-//           let data: Data! = "3".data(using: .utf8)
-//           ViewController.bleControlloer.lightingCtlPeripheral.writeValue(data, for: ViewController.bleControlloer.lightingCtlChar!, type: .withResponse)
-           navigationController?.popViewController(animated: true)
+            navigationController?.popViewController(animated: true)
         }
     }
     

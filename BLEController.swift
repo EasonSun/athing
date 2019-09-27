@@ -23,17 +23,20 @@ class BLEController: NSObject {
 }
 
 extension BLEController {
-    func prepare(completionHandler: @escaping (Error?) -> Void) {
+    func prepare() {
         self.centralManager = CBCentralManager(delegate: self, queue: nil)
         //TODO how to get the discovery ready?
 //        self.lightingCtlPeripheral.state == .connected
         // TODO how to reconnect to a char
         // wait until char become not nil
-        
+        print("All done")
+
     }
-    
-    func setLightingParam(lightingParam: [UInt8]) {
-        
+
+     func setLightingParam(catNo: Int) {
+        let data: Data! = "1".data(using: .utf8)
+        // null check
+        self.lightingCtlPeripheral.writeValue(data, for: self.lightingCtlChar!, type: .withResponse)
     }
 }
 
@@ -53,24 +56,20 @@ extension BLEController: CBCentralManagerDelegate {
             print("central.state is .poweredOff")
         case .poweredOn:
             print("central.state is .poweredOn")
-            // So it only scans for the lightingCtl service
-            // TODO if l58, app crashs. The service has to be on to be searched in app
+        
+        // esp32 has to write 2 senetences to enable app to find its service here.
+        // if the device never connected to StikLight before, first connection before stiklight is on will crash
+        // after first connection, if StikLight is not on, won't crash but won't go to next function.
         self.centralManager.scanForPeripherals(withServices: [lightingCtlServiceCBUUID])
+            print("after print before scan")
 //            self.centralManager.scanForPeripherals(withServices:nil)
         }
     }
     
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral,
                         advertisementData: [String : Any], rssi RSSI: NSNumber) {
+        print("found peripheral")
         print(peripheral)
-//        if (peripheral.name == "StikLight") {
-////            print(peripheral.services?.count)
-//            guard let services = peripheral.services else { return }
-//            for service in services {
-//                print(service)
-//            }
-//            self.centralManager.stopScan()
-//        }
         self.lightingCtlPeripheral = peripheral
         self.lightingCtlPeripheral.delegate = self
         self.centralManager.stopScan()
