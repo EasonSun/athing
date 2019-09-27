@@ -18,11 +18,16 @@
 #define SERVICE_UUID        "4fafc201-1fb5-459e-8fcc-c5c9c331914b"
 #define LightingCtrlCharUUID "beb5483e-36e1-4688-b7f5-ea07361b26a8"
 #define LightingReadyCharUUID "beb5483e-1fb5-4688-8fcc-ea07361b26a8"
+#define relay1 4  // 7
+#define relay2 16 // 6  
+#define relay3 17  // 5
+#define relay4 5  // 4
 
 BLECharacteristic *pLightingCtrlChar;
 BLECharacteristic *pLightingReadyChar;
 bool lightingReady = false;
 uint32_t value = 1;
+uint32_t relay = 0;
     
 class MyToyCallbacks: public BLECharacteristicCallbacks {
     void onWrite(BLECharacteristic *pCharacteristic) {
@@ -36,12 +41,30 @@ class MyToyCallbacks: public BLECharacteristicCallbacks {
 
         Serial.println();
         Serial.println("*********");
+
+        relay = value[0];
+        Serial.println(relay);
+      }
+      if (relay == 49) {
+        digitalWrite(relay1,HIGH);// turn relay 1 ON
+        digitalWrite(relay4,HIGH);// turn relay 1 ON
       }
 
+      if (relay == 50) {
+        digitalWrite(relay1,LOW);// turn relay 1 ON
+        digitalWrite(relay4,LOW);// turn relay 1 ON
+        digitalWrite(relay1,HIGH);
+      }
 
+       if (relay == 51) {
+        digitalWrite(relay1,LOW);// turn relay 1 ON
+        digitalWrite(relay4,LOW);// turn relay 1 ON
+        digitalWrite(relay4,HIGH);
+      }
+        
       digitalWrite(LED_BUILTIN, HIGH);   // turn the LED on (HIGH is the voltage level)
       delay(1000);                       // wait for a second   
-      lightingReady = true;      
+      lightingReady = true;  
     }
 };
 
@@ -67,6 +90,10 @@ void setup() {
 
   // initialize digital pin LED_BUILTIN as an output.
   pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(relay1, OUTPUT);// connected to Relay 1, relay7
+  pinMode(relay2, OUTPUT);// connected to Relay 2, relay6
+  pinMode(relay3, OUTPUT);// connected to Relay 3, relay5
+  pinMode(relay4, OUTPUT);// connected to Relay 4, relay4  
 
   BLEDevice::init("StikLight");
   BLEServer *pLightingServer = BLEDevice::createServer();
@@ -91,7 +118,11 @@ void setup() {
   pLightingCtrlService->start();
 
   BLEAdvertising *pAdvertising = pLightingServer->getAdvertising();
-  pAdvertising->start();
+  pAdvertising->addServiceUUID(SERVICE_UUID);
+  pAdvertising->setScanResponse(true);
+  pAdvertising->setMinPreferred(0x06);  // functions that help with iPhone connections issue
+  pAdvertising->setMinPreferred(0x12);
+  BLEDevice::startAdvertising();
 }
 
 void loop() {

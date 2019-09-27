@@ -62,9 +62,24 @@ class CategoryTableViewController: UITableViewController {
             categories[indexPath.section].opened = !categories[indexPath.section].opened
             let sections = IndexSet.init(integer: indexPath.section)
             tableView.reloadSections(sections, with: .none)
-        } else {
+        } else if (indexPath.row == 1) {
             // apply config and navigate back
+            // CameraController.rearCamera?
+//            let data: Data! = "1".data(using: .utf8)
+//            ViewController.bleControlloer.lightingCtlPeripheral.writeValue(data, for: ViewController.bleControlloer.lightingCtlChar!, type: .withResponse)
             navigationController?.popViewController(animated: true)
+        } else if (indexPath.row == 2) {
+           // apply config and navigate back
+           // CameraController.rearCamera?
+//           let data: Data! = "2".data(using: .utf8)
+//           ViewController.bleControlloer.lightingCtlPeripheral.writeValue(data, for: ViewController.bleControlloer.lightingCtlChar!, type: .withResponse)
+           navigationController?.popViewController(animated: true)
+        } else if (indexPath.row == 3) {
+           // apply config and navigate back
+           // CameraController.rearCamera?
+//           let data: Data! = "3".data(using: .utf8)
+//           ViewController.bleControlloer.lightingCtlPeripheral.writeValue(data, for: ViewController.bleControlloer.lightingCtlChar!, type: .withResponse)
+           navigationController?.popViewController(animated: true)
         }
     }
     
@@ -115,20 +130,23 @@ class CategoryTableViewController: UITableViewController {
     
     private func loadSampleItems() {
         
-        guard let item1 = Item(config: "Config 1") else {
+        guard let item1 = Item(config: "Handbag") else {
             fatalError("Unable to instantiate item1")
         }
-        guard let item2 = Item(config: "Config 2") else {
+        guard let item2 = Item(config: "Shoe") else {
             fatalError("Unable to instantiate item2")
         }
-        guard let item3 = Item(config: "Config 3") else {
+        guard let item3 = Item(config: "Jewelry") else {
             fatalError("Unable to instantiate item3")
+        }
+        guard let item4 = Item(config: "Watch") else {
+            fatalError("Unable to instantiate item4")
         }
         
         
         categories = [
-            cellCategory(opened: false, title: "Category 1", sectionItems: [item1, item2]),
-            cellCategory(opened: false, title: "Category 2", sectionItems: [item3]),
+            cellCategory(opened: false, title: "Fashion", sectionItems: [item1, item2, item3]),
+            cellCategory(opened: false, title: "Office", sectionItems: [item4]),
         ]
     }
     

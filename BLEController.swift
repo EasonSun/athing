@@ -55,26 +55,26 @@ extension BLEController: CBCentralManagerDelegate {
             print("central.state is .poweredOn")
             // So it only scans for the lightingCtl service
             // TODO if l58, app crashs. The service has to be on to be searched in app
-//        self.centralManager.scanForPeripherals(withServices: [lightingCtlServiceCBUUID])
-            self.centralManager.scanForPeripherals(withServices:nil)
+        self.centralManager.scanForPeripherals(withServices: [lightingCtlServiceCBUUID])
+//            self.centralManager.scanForPeripherals(withServices:nil)
         }
     }
     
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral,
                         advertisementData: [String : Any], rssi RSSI: NSNumber) {
         print(peripheral)
-        if (peripheral.name == "StikLight") {
-//            print(peripheral.services?.count)
-            guard let services = peripheral.services else { return }
-            for service in services {
-                print(service)
-            }
-            self.centralManager.stopScan()
-        }
-//        self.lightingCtlPeripheral = peripheral
-//        self.lightingCtlPeripheral.delegate = self
-//        self.centralManager.stopScan()
-//        self.centralManager.connect(self.lightingCtlPeripheral)
+//        if (peripheral.name == "StikLight") {
+////            print(peripheral.services?.count)
+//            guard let services = peripheral.services else { return }
+//            for service in services {
+//                print(service)
+//            }
+//            self.centralManager.stopScan()
+//        }
+        self.lightingCtlPeripheral = peripheral
+        self.lightingCtlPeripheral.delegate = self
+        self.centralManager.stopScan()
+        self.centralManager.connect(self.lightingCtlPeripheral)
     }
     
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
@@ -101,7 +101,13 @@ extension BLEController: CBPeripheralDelegate {
             case lightingCtlCharCBUUID:
                 self.lightingCtlChar = characteristic
                 // emit completion event
-//                lightingCtlPeripheral.writeValue(Data: NSData(1), for: lightingCtlChar, type: CBCharacteristicWriteType)
+//                var theData : NSInteger = 9
+//                let data = NSData(bytes: &theData, length: 1)
+//                lightingCtlPeripheral.writeValue(data as Data, for: characteristic, type: .withResponse)
+
+                
+//                let data: Data! = "9".data(using: .utf8)
+//                lightingCtlPeripheral.writeValue(data, for: characteristic, type: .withResponse)
             case lightingReadyCharCBUUID:
                 peripheral.setNotifyValue(true, for: characteristic)
             default:
@@ -109,6 +115,10 @@ extension BLEController: CBPeripheralDelegate {
             }
         }
     }
+    
+//    func peripheral(_ peripheral: CBPeripheral, didWriteValueFor descriptor: CBDescriptor, error: Error?) {
+//
+//    }
     
     // This method is invoked after a @link readValueForCharacteristic: @/link call, or upon receipt of a notification/indication.
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
@@ -131,8 +141,4 @@ extension BLEController: CBPeripheralDelegate {
             return false
         }
     }
-    
-//    func peripheral(_ peripheral: CBPeripheral, didWriteValueFor descriptor: CBDescriptor, error: Error?) {
-//        <#code#>
-//    }
 }

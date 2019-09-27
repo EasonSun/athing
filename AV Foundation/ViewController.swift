@@ -25,8 +25,8 @@ class ViewController: UIViewController {
     ///Allows the user to put the camera in video mode.
     @IBOutlet fileprivate var videoModeButton: UIButton!
     
-    let cameraController = CameraController()
-    let bleControlloer = BLEController()
+    static let cameraController = CameraController()
+    static let bleControlloer = BLEController()
     
     override var prefersStatusBarHidden: Bool { return true }
     
@@ -36,12 +36,12 @@ extension ViewController {
     override func viewDidLoad() {
         
         func configureCameraController() {
-            cameraController.prepare {(error) in
+            ViewController.cameraController.prepare {(error) in
                 if let error = error {
                     print(error)
                 }
                 
-                try? self.cameraController.displayPreview(on: self.capturePreviewView)
+                try? ViewController.cameraController.displayPreview(on: self.capturePreviewView)
             }
         }
         
@@ -53,7 +53,7 @@ extension ViewController {
         }
         
         func configBLEController() {
-            bleControlloer.prepare {(error) in
+            ViewController.bleControlloer.prepare {(error) in
                 if let error = error {
                     print(error)
                 }
@@ -66,7 +66,7 @@ extension ViewController {
         // TODO hardcode lighting param for now
 //        bleControlloer.setLightingParam(lightingParam: cameraController.getLightingParam())
 
-        cameraController.captureImage {(image, error) in
+        ViewController.cameraController.captureImage {(image, error) in
             guard let image = image else {
                 print(error ?? "Image capture error")
                 return
@@ -93,27 +93,27 @@ extension ViewController {
 
 extension ViewController {
     @IBAction func toggleFlash(_ sender: UIButton) {
-        if cameraController.flashMode == .on {
-            cameraController.flashMode = .off
+        if ViewController.cameraController.flashMode == .on {
+            ViewController.cameraController.flashMode = .off
             toggleFlashButton.setImage(#imageLiteral(resourceName: "Flash Off Icon"), for: .normal)
         }
             
         else {
-            cameraController.flashMode = .on
+            ViewController.cameraController.flashMode = .on
             toggleFlashButton.setImage(#imageLiteral(resourceName: "Flash On Icon"), for: .normal)
         }
     }
     
     @IBAction func switchCameras(_ sender: UIButton) {
         do {
-            try cameraController.switchCameras()
+            try ViewController.cameraController.switchCameras()
         }
             
         catch {
             print(error)
         }
         
-        switch cameraController.currentCameraPosition {
+        switch ViewController.cameraController.currentCameraPosition {
         case .some(.front):
             toggleCameraButton.setImage(#imageLiteral(resourceName: "Front Camera Icon"), for: .normal)
             
@@ -128,7 +128,7 @@ extension ViewController {
     @IBAction func captureImage(_ sender: UIButton) {
         // TODO cannot start right away. What is the start signal? Installed on dock, or intensity max detected, i.e the door closed. In a micro wave, operations are done after lid closes
         // TODO can I do everthing in sequence here?
-        cameraController.captureImage {(image, error) in
+        ViewController.cameraController.captureImage {(image, error) in
             guard let image = image else {
                 print(error ?? "Image capture error")
                 return
