@@ -70,6 +70,7 @@ class CategoryTableViewController: UITableViewController {
         } else if (indexPath.row == 2) {
            // apply config and navigate back
            // CameraController.rearCamera?
+//            AppDelegate.bleController.testCancelConnection()
             navigationController?.popViewController(animated: true)
         } else if (indexPath.row == 3) {
            // apply config and navigate back

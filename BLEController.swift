@@ -8,6 +8,7 @@
 import AVFoundation
 import CoreBluetooth
 
+// TODO what if user switch phone? How to connect?
 // TODO multiple service, e.g. one for lighting, one for multi-angle, etc?
 // <CBPeripheral: 0x281001860, identifier = 99C1BC44-54E0-5C4B-3AA7-64DCA8B28B63, name = StikLight, state = disconnected>
 let lightingCtlServiceCBUUID = CBUUID(string: "4FAFC201-1FB5-459E-8FCC-C5C9C331914B")
@@ -34,13 +35,18 @@ extension BLEController {
     }
 
      func setLightingParam(catNo: Int) {
+         if (self.lightingCtlPeripheral == nil || self.lightingCtlPeripheral.state != .connected) {
+             //ASK user to turn on device
+             return
+         }
+
         let data: Data! = "1".data(using: .utf8)
         // null check
         self.lightingCtlPeripheral.writeValue(data, for: self.lightingCtlChar!, type: .withResponse)
     }
 }
 
-// TODO When will poweredOn happen? Will the user get promopt?
+// TODO somehow if start app before esp32, turn on esp32 will trigger this.
 extension BLEController: CBCentralManagerDelegate {
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
         switch central.state {
@@ -61,7 +67,6 @@ extension BLEController: CBCentralManagerDelegate {
         // if the device never connected to StikLight before, first connection before stiklight is on will crash
         // after first connection, if StikLight is not on, won't crash but won't go to next function.
         self.centralManager.scanForPeripherals(withServices: [lightingCtlServiceCBUUID])
-            print("after print before scan")
 //            self.centralManager.scanForPeripherals(withServices:nil)
         }
     }
@@ -78,7 +83,8 @@ extension BLEController: CBCentralManagerDelegate {
     
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
         print("Connected!")
-lightingCtlPeripheral.discoverServices([lightingCtlServiceCBUUID])
+        // if the device never connected to StikLight before, first connection before stiklight is on will crash
+        lightingCtlPeripheral.discoverServices([lightingCtlServiceCBUUID])
     }
 }
 
@@ -114,6 +120,18 @@ extension BLEController: CBPeripheralDelegate {
             }
         }
     }
+
+    // Do we use this if store everything. Maybe when phone go out of range and back?
+    // this will trying to connect indefinitely.
+    func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
+        print("disconnected. Trying to reconnect")
+        self.centralManager.connect(peripheral)
+    }
+
+    func testCancelConnection(){
+        self.centralManager.cancelPeripheralConnection(self.lightingCtlPeripheral)
+        print()
+}
     
 //    func peripheral(_ peripheral: CBPeripheral, didWriteValueFor descriptor: CBDescriptor, error: Error?) {
 //
